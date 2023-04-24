@@ -12,3 +12,7 @@
 
 * lombok 테스트 (@Data, @NoArgsConstructor, @AllArgsConstructor -> @Builder 테스트)
  
+* application.yml 설정 
+  * jsp 테스트 (prefix: /webapp/WEB-INF/views/  suffix :.jsp 경로 설정 및 확인)
+
+* DB 저장을 위한 @Entity 설정, 각 변수들의 @Column 설정 ( User, Board, Reply )
