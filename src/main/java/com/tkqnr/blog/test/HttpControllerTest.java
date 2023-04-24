@@ -23,28 +23,28 @@ public class HttpControllerTest {
 	}
 
 	//인터넷 브라우저 요청은 무조건 get요청 밖에 할수가 없다.
-	//http://localhost:8080/http/get (select)
+	//http://localhost:8000/blog/http/get (select)
 	@GetMapping("/http/get")
 	public String getTest(Member m) { //MessageConverter(스프링부트)가 알아서 매핑
 
 		return "Get요청 :" +m.getId() +", " + m.getUsername()+", " + m.getPassword() + ", " + m.getEmail();
 	}
 
-	//http://localhost:8080/http/post(insert)
+	//http://localhost:8000/blog/http/post(insert)
 	@PostMapping("/http/post") //text/plain , application/json
 	public String postTest(@RequestBody Member m) { //MessageConverter(스프링부트)가 알아서 매핑
 
 		return "Post요청 :" +m.getId() +", " + m.getUsername()+", " + m.getPassword() + ", " + m.getEmail();
 	}
 
-	//http://localhost:8080/http/put(update)
+	//http://localhost:8000/blog/http/put(update)
 	@PutMapping("/http/put")
 	public String putTest(@RequestBody Member m) {
 
 		return "Put요청 :" +m.getId() +", " + m.getUsername()+", " + m.getPassword() + ", " + m.getEmail();
 	}
 
-	//http://localhost:8080/http/delete(delete)
+	//http://localhost:8000/blog/http/delete(delete)
 	@DeleteMapping("/http/delete")
 	public String deleteTest() {
 		return "delete요청";
