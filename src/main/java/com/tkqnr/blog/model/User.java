@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+// @DynamicInsert // Insert 할 때 null인 필드 제외
 //ORM -> JAVA Object 를 테이블로 Mapping
 @Entity // User 클래스를 읽어서 자동으로 mysql에 테이블 생성
 public class User {
@@ -32,8 +34,10 @@ public class User {
     @Column(nullable = false, length = 50)
     private String email;
 
-    @ColumnDefault("'user'") // "' '" 홑따옴표 varchar
-    private String role; // Enum을 쓰는게 좋음. 도메인을 설정할 수 있음 (범위). // admin,user,manager
+    //@ColumnDefault("'user'")
+    //DB는 RoleType 이라는게 없다. Enum이 string 이라고 알려줌.
+    @Enumerated(EnumType.STRING)
+    private RoleType role; // Enum을 쓰면 데이터를 넣을 때 어떤 도메인 안에서 값을 강제할 수 있음. / ADMIN,USER 강제됨
 
     @CreationTimestamp // 시간이 자동으로 입력
     private Timestamp createDate;
