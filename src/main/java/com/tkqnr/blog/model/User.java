@@ -1,12 +1,20 @@
 package com.tkqnr.blog.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 //ORM -> JAVA Object 를 테이블로 Mapping
 @Entity // User 클래스를 읽어서 자동으로 mysql에 테이블 생성
 public class User {
