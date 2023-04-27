@@ -4,6 +4,7 @@ import com.tkqnr.blog.model.RoleType;
 import com.tkqnr.blog.model.User;
 import com.tkqnr.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,26 +22,43 @@ public class DummyControllerTest {
     @Autowired // 의존성 주입 DI
     private UserRepository userRepository;
 
+    // 삭제
+    @DeleteMapping("/dummy/user/{id}")
+    public String delete(@PathVariable int id){
+        try {
+            userRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){ // Exception e
+            return "삭제에 실패하였습니다. 해당 id는 DB에 없습니다.";
+        }
+
+        return "삭제되었습니다. id: "+id;
+
+    }
+
+
     //save 함수는 id를 전달하지 않으면 Insert를 해주고,
     //save 함수는 id를 전달하면 해당 id에 대한 data가 있으면 Update를 해주고,
     //save 함수는 id를 전달하면 해당 id에 대한 data가 없으면 Insert를 함
     //email. password 수정
-    @Transactional
+    @Transactional // 함수 종료시에 자동 commit이 됨
     @PutMapping("/dummy/user/{id}")
     public User updateUser(@PathVariable int id,@RequestBody User requestUser){ //json 데이터 요청 -> Java Object(Message Converter의 Jackson 라이브러리가)로 변환해서 받아줌.
         System.out.println("id: "+id);
         System.out.println("password: "+ requestUser.getPassword());
         System.out.println("email: "+ requestUser.getEmail());
 
+        // 영속화
         User user = userRepository.findById(id).orElseThrow(()->{
             return new IllegalArgumentException("수정에 실패하였습니다.");
         });
+
+        //수정
         user.setPassword(requestUser.getPassword());
         user.setEmail(requestUser.getEmail());
 
         // userRepository.save(user);
 
-        return null;
+        return user;
     }
 
     //전체 select
