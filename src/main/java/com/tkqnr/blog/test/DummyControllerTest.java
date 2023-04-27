@@ -8,11 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,6 +20,28 @@ public class DummyControllerTest {
 
     @Autowired // 의존성 주입 DI
     private UserRepository userRepository;
+
+    //save 함수는 id를 전달하지 않으면 Insert를 해주고,
+    //save 함수는 id를 전달하면 해당 id에 대한 data가 있으면 Update를 해주고,
+    //save 함수는 id를 전달하면 해당 id에 대한 data가 없으면 Insert를 함
+    //email. password 수정
+    @Transactional
+    @PutMapping("/dummy/user/{id}")
+    public User updateUser(@PathVariable int id,@RequestBody User requestUser){ //json 데이터 요청 -> Java Object(Message Converter의 Jackson 라이브러리가)로 변환해서 받아줌.
+        System.out.println("id: "+id);
+        System.out.println("password: "+ requestUser.getPassword());
+        System.out.println("email: "+ requestUser.getEmail());
+
+        User user = userRepository.findById(id).orElseThrow(()->{
+            return new IllegalArgumentException("수정에 실패하였습니다.");
+        });
+        user.setPassword(requestUser.getPassword());
+        user.setEmail(requestUser.getEmail());
+
+        // userRepository.save(user);
+
+        return null;
+    }
 
     //전체 select
     @GetMapping("/dummy/users")
