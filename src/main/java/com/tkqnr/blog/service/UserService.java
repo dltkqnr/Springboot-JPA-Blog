@@ -1,0 +1,21 @@
+package com.tkqnr.blog.service;
+
+import com.tkqnr.blog.model.User;
+import com.tkqnr.blog.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+//스프링이 컴포넌트 스캔을 통해 Bean에 등록해줌.  IoC를 해준다
+@Service
+public class UserService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Transactional
+    public void 회원가입(User user){
+        userRepository.save(user);
+    }
+}
