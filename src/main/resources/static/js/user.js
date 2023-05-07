@@ -3,6 +3,9 @@ let index={
         $("#btn-save").on("click",()=>{ // funtion(){} 대신 ()=>{} 를 사용. this를 바인딩 하기 위해서 
             this.save();
         });
+        $("#btn-login").on("click",()=>{ // funtion(){} 대신 ()=>{} 를 사용. this를 바인딩 하기 위해서 
+            this.login();
+        });
     },
 
     save:function(){
