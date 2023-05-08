@@ -1,6 +1,6 @@
 package com.tkqnr.blog.service;
 
-ㅇimport com.tkqnr.blog.model.RoleType;
+import com.tkqnr.blog.model.RoleType;
 import com.tkqnr.blog.model.User;
 import com.tkqnr.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
