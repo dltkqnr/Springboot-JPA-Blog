@@ -4,7 +4,7 @@
 
 <sec:authorize access="isAuthenticated()">
   <script>
-      <sec:authentication property="principal"var="principal"/>
+      <sec:authentication property="principal" var="principal"/>
   </script>
 </sec:authorize>
 
@@ -32,10 +32,10 @@
 
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="/loginForm">로그인</a>
+          <a class="nav-link" href="/auth/loginForm">로그인</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/joinForm">회원가입</a>
+          <a class="nav-link" href="/auth/joinForm">회원가입</a>
         </li>
       </ul>
   
