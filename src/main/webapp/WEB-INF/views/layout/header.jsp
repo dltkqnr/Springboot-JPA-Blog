@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<sec:authorize access="isAuthenticated()">
+  <script>
+      <sec:authentication property="principal"var="principal"/>
+  </script>
+</sec:authorize>
+
 <!DOCTYPE html>
 <head>
   <title>Bootstrap Example</title>
@@ -20,7 +28,7 @@
 
 
     <c:choose>
-      <c:when test="${empty sessionScope.principal}">
+      <c:when test="${empty principal}">
 
       <ul class="navbar-nav">
         <li class="nav-item">
