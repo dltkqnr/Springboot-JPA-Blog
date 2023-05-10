@@ -4,10 +4,14 @@ import com.tkqnr.blog.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 // DAO
 // 자동으로 bean 등록이 되서 @Repository 생략 가능
 public interface UserRepository extends JpaRepository<User, Integer> { //User 테이블을 관리하는 repository , PK는 Integer
 
+    //SELECT * FORM user WHERE username=1?;
+    Optional<User> findByUsername(String username);
 }
 
 

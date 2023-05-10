@@ -9,10 +9,13 @@ import java.util.Collection;
 
 // 스프링 시큐리티가 로그인 요청을 가로채서 로그인을 진행하고 완료가 되면 UserDetails 타입의 오브젝트를
 // 스프링 시큐리티의 고유한 세션저장소에 저장을 해준다.
-public class principalDetail implements UserDetails {
+public class PrincipalDetail implements UserDetails {
 
     private User user; //콤포지션
 
+    public PrincipalDetail(User user) {
+        this.user = user;
+    }
 
     @Override
     public String getPassword() {
@@ -27,7 +30,7 @@ public class principalDetail implements UserDetails {
     //계정이 만료되지 않았는지 리턴한다.(true:만료안됨.)
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     //계정이 잠겨있는지 안잠겨있는지 리턴 (true:잠기지않음.)
