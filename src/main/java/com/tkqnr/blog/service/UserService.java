@@ -4,6 +4,10 @@ import com.tkqnr.blog.model.RoleType;
 import com.tkqnr.blog.model.User;
 import com.tkqnr.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +46,7 @@ public class UserService {
         String encPassword = encoder.encode(rawPassword);
         persistance.setPassword(encPassword);
         persistance.setEmail(user.getEmail());
+
         // 회원수정 함수 종료시 = Service가 종료 = 트랜잭션 종료 = commit이 자동으로 됨.
         // 영속화 된 persistance 객체의 변경이 감지되면, 더티체킹이 되서 변경된 것들을 자동으로 update문을 날려줌
     }
