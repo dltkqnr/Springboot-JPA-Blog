@@ -34,6 +34,8 @@ public class User {
     @Column(nullable = false, length = 50)
     private String email;
 
+    private String oauth; // kakao, google
+
     //@ColumnDefault("'user'")
     //DB는 RoleType 이라는게 없다. Enum이 string 이라고 알려줌.
     @Enumerated(EnumType.STRING)

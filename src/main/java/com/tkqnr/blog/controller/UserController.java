@@ -7,10 +7,15 @@ import com.tkqnr.blog.model.OAuthToken;
 import com.tkqnr.blog.model.User;
 import com.tkqnr.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -30,6 +35,12 @@ public class UserController {
     @Autowired
     private  UserService userService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Value("${cos.key}")
+    private String cosKey;
+
     @GetMapping("/auth/joinForm")
     public String joinForm(){
         return "user/joinForm";
@@ -46,7 +57,7 @@ public class UserController {
     }
 
     @GetMapping("/auth/kakao/callback")
-    public @ResponseBody String kakaoCallback(String code){ //Data를 리턴해주는 컨트롤러 함수
+    public String kakaoCallback(String code){ //Data를 리턴해주는 컨트롤러 함수
 
         //POST방식으로 key=value 데이터를 요청(카카오쪽으로)
         //Retrofit2, OkHttp, RestTemplate
@@ -121,21 +132,37 @@ public class UserController {
 
         System.out.println("블로그서버 유저네임: "+kakaoProfile.getKakao_account().getEmail()+"_"+kakaoProfile.getId());
         System.out.println("블로그서버 이메일: "+ kakaoProfile.getKakao_account().getEmail());
-        UUID garbagePassword = UUID.randomUUID();
+        // UUID garbagePassword = UUID.randomUUID();
+        //UUID란 -> 중복되지 않는 어떤 특정 값을 만들어내는 알고리즘 -> 카카오로그인시 계속 패스워드가 바뀌어서 확인못함
 
-        System.out.println("블로그서버 패스워드: " + garbagePassword);
+        System.out.println("블로그서버 패스워드: " + cosKey);
 
 
-        User user = User.builder()
+        User kakaoUser = User.builder()
                         .username(kakaoProfile.getKakao_account().getEmail()+"_"+kakaoProfile.getId())
-                        .password(garbagePassword.toString())
+                        .password(cosKey)
                         .email(kakaoProfile.getKakao_account().getEmail())
+                        .oauth("kakao")
                                 .build();
 
-        userService.회원가입(user);
+
+        // 가입자 혹은 비가입자 체크 해서 처리
+
+        User originUser = userService.회원찾기(kakaoUser.getUsername());
+
+        if(originUser.getUsername() == null){
+            System.out.println("신규 회원이므로 자동 회원가입 진행");
+            userService.회원가입(kakaoUser);
+        }
+
+        // 로그인 처리
+        System.out.println("자동 로그인 진행");
+        Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUsername(),cosKey));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
 
-        return response2.getBody();
+
+        return "redirect:/";
     }
 }
