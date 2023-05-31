@@ -1,5 +1,6 @@
 package com.tkqnr.blog.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +37,8 @@ public class Board {
     private User user; // DB는 오브젝트 저장할 수 없다. FK, 자바는 오브젝트를 저장할 수 있다.
 
     @OneToMany(mappedBy = "board",fetch = FetchType.EAGER) //mappedBy 연관관계의 주인이 아니다. (FK키가 아니다.) DB에 컬럼 만들지 마세요. ""는 필드값.
-    private List<Reply> reply; // Board를 select할 때 join문을 통해서 값을 얻기 위해서만 필요한 것. DB에 컬럼 X
+    @JsonIgnoreProperties({"board"})
+    private List<Reply> replys; // Board를 select할 때 join문을 통해서 값을 얻기 위해서만 필요한 것. DB에 컬럼 X
 
     @CreationTimestamp
     private Timestamp createDate;
