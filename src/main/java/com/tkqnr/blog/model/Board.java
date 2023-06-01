@@ -38,6 +38,7 @@ public class Board {
 
     @OneToMany(mappedBy = "board",fetch = FetchType.EAGER) //mappedBy 연관관계의 주인이 아니다. (FK키가 아니다.) DB에 컬럼 만들지 마세요. ""는 필드값.
     @JsonIgnoreProperties({"board"})
+    @OrderBy("id desc")
     private List<Reply> replys; // Board를 select할 때 join문을 통해서 값을 얻기 위해서만 필요한 것. DB에 컬럼 X
 
     @CreationTimestamp
