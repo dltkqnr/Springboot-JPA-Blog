@@ -1,11 +1,13 @@
 package com.tkqnr.blog.service;
 
 
+import com.tkqnr.blog.dto.ReplySaveRequestDto;
 import com.tkqnr.blog.model.Board;
 import com.tkqnr.blog.model.Reply;
 import com.tkqnr.blog.model.User;
 import com.tkqnr.blog.repository.BoardRepository;
 import com.tkqnr.blog.repository.ReplyRepository;
+import com.tkqnr.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,9 @@ public class BoardService {
 
     @Autowired
     private ReplyRepository replyRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public void 글쓰기(Board board, User user){ //title, content
@@ -61,15 +66,23 @@ public class BoardService {
     }
 
     @Transactional
-    public void 댓글쓰기(User user, int boardId, Reply requestReply){
+    public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto){
 
-        Board board = boardRepository.findById(boardId).orElseThrow(()->{
+        User user = userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(()->{
+            return new IllegalArgumentException("댓글 쓰기 실패: 유저 id를 찾을 수 없습니다.");
+        }); // 영속화
+
+        Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()->{
             return new IllegalArgumentException("댓글 쓰기 실패: 게시글 id를 찾을 수 없습니다.");
-        });
+        }); // 영속화
 
-        requestReply.setUser(user);
-        requestReply.setBoard(board);
+        Reply reply = Reply.builder()
+                        .user(user)
+                        .board(board)
+                        .content(replySaveRequestDto.getContent())
+                        .build();
 
-        replyRepository.save(requestReply);
+
+        replyRepository.save(reply);
     }
 }

@@ -1,6 +1,7 @@
 package com.tkqnr.blog.controller.api;
 
 import com.tkqnr.blog.config.auth.PrincipalDetail;
+import com.tkqnr.blog.dto.ReplySaveRequestDto;
 import com.tkqnr.blog.dto.ResponseDto;
 import com.tkqnr.blog.model.Board;
 import com.tkqnr.blog.model.Reply;
@@ -40,10 +41,12 @@ public class BoardApiController {
         return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
     }
 
-    @PostMapping("/api/board/{boardId}/reply")
-    public ResponseDto<Integer> replySave(@PathVariable int boardId, @RequestBody Reply reply,@AuthenticationPrincipal PrincipalDetail principal){
 
-        boardService.댓글쓰기(principal.getUser(), boardId, reply);
+    //데이터를 받을 때 컨트롤러에서 dto를 만들어서 받는게 좋다.
+    @PostMapping("/api/board/{boardId}/reply")
+    public ResponseDto<Integer> replySave( @RequestBody ReplySaveRequestDto replySaveRequestDto){
+
+        boardService.댓글쓰기(replySaveRequestDto);
         return new ResponseDto<Integer>(HttpStatus.OK.value(),1);
     }
 }
