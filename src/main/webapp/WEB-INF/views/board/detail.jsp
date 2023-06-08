@@ -6,8 +6,8 @@
 
       <button class="btn btn-secondary" onclick="history.back();">돌아가기</button>
       <c:if test="${board.user.id == principal.user.id}">
-      <a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
-      <button id="btn-delete" class="btn btn-danger">삭제</button>
+        <a href="/board/${board.id}/updateForm" class="btn btn-warning">수정</a>
+        <button id="btn-delete" class="btn btn-danger">삭제</button>
       </c:if>
       <br /><br />
       <div>
@@ -47,7 +47,9 @@
               <div>${reply.content}</div>
               <div class="d-flex">
                 <div class="font-italic">작성자 : ${reply.user.username} &nbsp;</div>
-                <button onClick="index.replyDelete(${board.id},${reply.id})" class="badge">삭제</button>
+                <c:if test="${reply.user.id == principal.user.id}">
+                  <button onClick="index.replyDelete(${board.id},${reply.id})" class="badge">삭제</button>
+                </c:if>
               </div>
             </li>  
           </c:forEach>
