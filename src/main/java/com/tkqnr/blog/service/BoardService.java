@@ -69,4 +69,9 @@ public class BoardService {
     public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto){
         int result = replyRepository.mSave(replySaveRequestDto.getUserId(),replySaveRequestDto.getBoardId(),replySaveRequestDto.getContent());
     }
+
+    @Transactional
+    public void 댓글삭제(int replyId){
+        replyRepository.deleteById(replyId);
+    }
 }

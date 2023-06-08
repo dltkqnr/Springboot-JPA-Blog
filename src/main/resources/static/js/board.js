@@ -109,6 +109,20 @@ let index={
         });
 
     },    
+    replyDelete:function(boardId,replyId){
+        $.ajax({
+            type:"DELETE",
+            url:`/api/board/${boardId}/reply/${replyId}`,
+            dataType:"json" // 요청을 서버로 해서 응답이 왔을 때 기본적으로 모든것이 문자열 (생긴게 json이라면) =>javascript 오브젝트로 변경해줌 
+
+            //회원가입 수행 요청 성공하면 done, 실패하면 fail 실행
+        }).done(function(resp){
+            alert("댓글이 삭제 되었습니다.")
+            location.href=`/board/${boardId}`;
+        }).fail(function(error){
+            alert(JSON.stringify(error));
+        });
+    },
 
 }
 
